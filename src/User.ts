@@ -1,6 +1,6 @@
-export interface Comment {
+export interface User {
     id: number;
     email: string;
     avatar: string;
-    comment: string;
+    content: string;
 }

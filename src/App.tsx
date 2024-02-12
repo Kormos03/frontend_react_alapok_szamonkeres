@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.css';
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import { User } from './User';
 
 import './App.css'
 
@@ -23,27 +24,11 @@ function Blog() {
   )
 }
 
-function Comments(prop) {
-  const [comments, setComments] = useState([])
 
-  return (
-    <div>
-      <h3>
-        Comments
-      </h3>
-      <li>
-        {comments.map(comment => {
-          return comment
-        })}
-      </li>
-
-    </div>
-  )
-}
 
 
 function App() {
-  const [comments, setComments] = useState([] as Comment[]);
+  const [comments, setComments] = useState([] as User[]);
   const [errorMessage, setErrorMessage] = useState('');
 
   async function load() {
@@ -52,7 +37,7 @@ function App() {
       if (!response.ok) {
         setErrorMessage('Download error')
       }
-      const content = await response.json() as Comment[];
+      const content = await response.json() as User[];
       setComments(content);
     }
 
@@ -64,13 +49,28 @@ function App() {
   useEffect(() => {
     load();
   }, [])
-
+  console.log(comments)
 
   return (
     <div className='container-fluid' >
 
       <Blog></Blog>
-      <Comments prop={comments} />
+      <h3>
+        Comments
+      </h3>
+      <table>
+        <tbody>
+          {
+            comments.map((comment: User) => (
+              <tr key={comment.id}>
+                <td><img src={comment.avatar} alt="" /></td>
+                <td><p>{comment.email}</p>
+                  <p>{comment.content}</p></td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
     </div>
   )
 }
